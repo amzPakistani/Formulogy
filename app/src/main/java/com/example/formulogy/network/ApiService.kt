@@ -8,7 +8,7 @@ interface ApiService {
     @GET("sessions?year=2024")
     suspend fun getSessions(@Query("meeting_key") meetingkey: String?): List<SessionResponse>
 
-    @GET("position?meeting_key=latest")
+    @GET("position?meeting_key=latest&session_key=latest")
     suspend fun getPositions(): List<PositionResponse>
 
     @GET("meetings?year=2024")

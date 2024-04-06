@@ -50,10 +50,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.formulogy.Screen
 import com.example.formulogy.network.MeetingResponse
+import com.example.formulogy.network.SessionResponse
 
 @Composable
 fun LiveScreen(viewModel: F1ViewModel, navController: NavController) {
@@ -70,6 +72,7 @@ fun LiveScreen(viewModel: F1ViewModel, navController: NavController) {
     }
 
     val meetings = viewModel.meetings.collectAsState(initial = null)
+    val sessions = viewModel.sessions.collectAsState(initial = null)
     val positions = viewModel.positions.collectAsState(initial = null)
     val drivers = viewModel.drivers.collectAsState(initial = null)
     if (positions.value != null && drivers.value != null) {
@@ -81,7 +84,7 @@ fun LiveScreen(viewModel: F1ViewModel, navController: NavController) {
         Log.i("LiveScreen", "driverMap: $driverMap")
         Log.i("LiveScreen", "positionMap: $positionMap")
 
-        LiveList(positionMap, driverMap, meetings.value!![0], onClick = {
+        LiveList(positionMap, driverMap, meetings.value!![0], sessions.value!!.last(), onClick = {
             navController.navigate(Screen.TracksScreen.route)
         })
     } else {
@@ -94,6 +97,7 @@ fun LiveList(
     positionMap: Map<Int, PositionResponse>,
     driverMap: Map<String, DriverResponse>,
     meetingResponse: MeetingResponse,
+    sessionResponse: SessionResponse,
     onClick: () -> Unit
 ) {
     Column(
@@ -114,8 +118,16 @@ fun LiveList(
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.weight(1.5f)
             )
-            IconButton(onClick = onClick,modifier = Modifier.padding(end = 16.dp).weight(0.25f)) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "Expand", modifier = Modifier.size(200.dp))
+            IconButton(
+                onClick = onClick, modifier = Modifier
+                    .padding(end = 16.dp)
+                    .weight(0.25f)
+            ) {
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = "Expand",
+                    modifier = Modifier.size(200.dp)
+                )
             }
         }
         ElevatedCard(
@@ -132,17 +144,30 @@ fun LiveList(
                 defaultElevation = 8.dp
             )
         ) {
-            LazyColumn() {
-                items(positionMap.values.toList().sortedBy { it.position }) { position ->
-                    val driver = driverMap[position.driver_number.toString()]
-                    if (driver != null) {
-                        LiveItem(position, driver)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = sessionResponse.session_name,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 20.sp,
+                    letterSpacing = 0.7.sp,
+                    modifier = Modifier
+                        .padding(top = 12.dp, bottom = 16.dp)
+
+                )
+                LazyColumn() {
+                    items(positionMap.values.toList().sortedBy { it.position }) { position ->
+                        val driver = driverMap[position.driver_number.toString()]
+                        if (driver != null) {
+                            LiveItem(position, driver)
+                        }
                     }
                 }
             }
+
         }
     }
 }
+
 
 //modifier = Modifier.padding(top = 60.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
 
@@ -252,9 +277,9 @@ fun DriverDetail(
 ) {
     var gradient = Brush.horizontalGradient(
         colors = listOf(
-            Color(255,251,251),
+            Color(255, 251, 251),
             Color.White,
-            Color(255,250,250)
+            Color(255, 250, 250)
         )
     )
     Card(
