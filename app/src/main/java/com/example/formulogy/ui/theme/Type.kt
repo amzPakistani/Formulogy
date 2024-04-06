@@ -26,6 +26,9 @@ val titliumSemi = FontFamily(
 val monster = FontFamily(
     Font(R.font.mon_semi, FontWeight.SemiBold),
 )
+val cabinSemi = FontFamily(
+    Font(R.font.cabin_semi, FontWeight.SemiBold),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -70,7 +73,14 @@ val Typography = Typography(
         fontSize = 20.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = cabinSemi,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,

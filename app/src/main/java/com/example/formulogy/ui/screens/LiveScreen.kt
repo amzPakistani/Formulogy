@@ -147,7 +147,7 @@ fun LiveList(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = sessionResponse.session_name,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontSize = 20.sp,
                     letterSpacing = 0.7.sp,
                     modifier = Modifier
