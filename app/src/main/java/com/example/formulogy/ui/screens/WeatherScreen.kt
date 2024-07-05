@@ -51,7 +51,7 @@ fun WeatherItem(weatherResponse: WeatherResponse, modifer: Modifier = Modifier){
     ) {
         Text("Weather", style = MaterialTheme.typography.headlineLarge)
         val imagePainterCloud = painterResource(id = R.drawable.cloud)
-        val imagePainterSun = painterResource(id = R.drawable.png_transparent_weather_sun_sunny_temperature_weather_color_icon)
+        val imagePainterSun = painterResource(id = R.drawable.sunny)
         if (weatherResponse.rainfall==1) {
             Image(painter = imagePainterCloud, contentDescription = "My Image")
         }else{
