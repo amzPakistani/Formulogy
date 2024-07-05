@@ -84,9 +84,7 @@ fun LiveScreen(viewModel: F1ViewModel, navController: NavController) {
         Log.i("LiveScreen", "driverMap: $driverMap")
         Log.i("LiveScreen", "positionMap: $positionMap")
 
-        LiveList(positionMap, driverMap, meetings.value!![0], sessions.value!!.last(), onClick = {
-            navController.navigate(Screen.TracksScreen.route)
-        })
+        LiveList(positionMap, driverMap, meetings.value!![0], sessions.value!!.last(), navController = navController)
     } else {
         LoadingScreen()
     }
@@ -98,7 +96,7 @@ fun LiveList(
     driverMap: Map<String, DriverResponse>,
     meetingResponse: MeetingResponse,
     sessionResponse: SessionResponse,
-    onClick: () -> Unit
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -112,14 +110,24 @@ fun LiveList(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.weight(0.5f))
+            IconButton(
+                onClick = { navController.navigate(Screen.WeatherScreen.route) }, modifier = Modifier
+                    .padding(end = 16.dp)
+                    .weight(0.25f)
+            ) {
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = "Expand",
+                    modifier = Modifier.size(200.dp)
+                )
+            }
             Text(
                 text = meetingResponse.meeting_name,
                 style = MaterialTheme.typography.headlineLarge,
                 modifier = Modifier.weight(1.5f)
             )
             IconButton(
-                onClick = onClick, modifier = Modifier
+                onClick = { navController.navigate(Screen.TracksScreen.route) }, modifier = Modifier
                     .padding(end = 16.dp)
                     .weight(0.25f)
             ) {

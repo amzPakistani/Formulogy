@@ -16,6 +16,7 @@ import com.example.formulogy.network.DriverResponse
 import com.example.formulogy.network.MeetingResponse
 import com.example.formulogy.network.PositionResponse
 import com.example.formulogy.network.SessionResponse
+import com.example.formulogy.network.WeatherResponse
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,18 +39,17 @@ class F1ViewModel(private val f1Repository: F1Repository):ViewModel(){
     private val _sessions = MutableStateFlow<List<SessionResponse>?>(null)
     private val _meetings = MutableStateFlow<List<MeetingResponse>?>(null)
 
-    // Expose sessions and meetings as StateFlow
     val sessions: StateFlow<List<SessionResponse>?> = _sessions
     val meetings: StateFlow<List<MeetingResponse>?> = _meetings
 
     private var fetchJob: Job? = null
-    // Initialize positions and drivers as MutableStateFlow
+
     private val _positions = MutableStateFlow<List<PositionResponse>?>(null)
     private val _drivers = MutableStateFlow<List<DriverResponse>?>(null)
-
-    // Expose positions and drivers as StateFlow
+    private  val _weather = MutableStateFlow<List<WeatherResponse>?>(null)
     val positions: StateFlow<List<PositionResponse>?> = _positions
     val drivers: StateFlow<List<DriverResponse>?> = _drivers
+    val weather: StateFlow<List<WeatherResponse>?> = _weather
 
 
     init {
@@ -141,6 +141,18 @@ class F1ViewModel(private val f1Repository: F1Repository):ViewModel(){
 
     fun stopFetchingPositions(){
         fetchJob?.cancel()
+    }
+
+    fun getWeather(){
+        viewModelScope.launch {
+            try {
+                val newWeather = f1Repository.getWeather()
+                _weather.value = newWeather
+            } catch (e: UnknownHostException) {
+                uiState = _uiState.Error
+                Log.e("F1ViewModel", "Unknown host exception getWeather", e)
+            }
+        }
     }
 
     companion object{

@@ -16,6 +16,9 @@ interface ApiService {
 
     @GET("drivers?session_key=9158")
     suspend fun getDrivers(@Query("driver_number") driver_number: String?): List<DriverResponse>
+
+    @GET("weather?meeting_key=latest&session_key=latest")
+    suspend fun getWeather():List<WeatherResponse>
 }
 
 

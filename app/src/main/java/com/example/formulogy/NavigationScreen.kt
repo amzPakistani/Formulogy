@@ -23,12 +23,14 @@ import com.example.formulogy.ui.screens.HomeScreen
 import com.example.formulogy.ui.screens.LiveScreen
 import com.example.formulogy.ui.screens.TrackScreenLayout
 import com.example.formulogy.ui.screens.TracksScreen
+import com.example.formulogy.ui.screens.WeatherScreen
 
 enum class Screen(val route: String) {
 
     HomeScreen("home_screen"),
     LiveScreen("live_screen"),
-    TracksScreen("track_screen")
+    TracksScreen("track_screen"),
+    WeatherScreen("weather_screen")
 }
 
 
@@ -63,6 +65,9 @@ fun NavigationScreen(uiState: _uiState, viewModel: F1ViewModel) {
             }
             composable(Screen.TracksScreen.route) {
                 TracksScreen(viewModel = viewModel)
+            }
+            composable(Screen.WeatherScreen.route){
+                WeatherScreen(viewModel)
             }
 
         }
