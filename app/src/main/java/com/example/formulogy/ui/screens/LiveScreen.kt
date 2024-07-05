@@ -85,8 +85,6 @@ fun LiveScreen(viewModel: F1ViewModel, navController: NavController) {
         Log.i("LiveScreen", "positionMap: $positionMap")
 
         LiveList(positionMap, driverMap, meetings.value!![0], sessions.value!!.last(), navController = navController)
-    } else {
-        LoadingScreen()
     }
 }
 

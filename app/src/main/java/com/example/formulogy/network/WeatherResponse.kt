@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 data class WeatherResponse(
     val air_temperature: Double,
     val date: String,
-    val humidity: Int,
     val meeting_key: Int,
     val pressure: Double,
     val rainfall: Int,
